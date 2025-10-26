@@ -85,6 +85,9 @@ export const PairingForm = ({ leagues }: { leagues: any }) => {
         // Save back to localStorage
         localStorage.setItem("pairings", JSON.stringify(pairings));
 
+        // Dispatch custom event to notify other components
+        window.dispatchEvent(new CustomEvent("pairingsUpdated"));
+
         // Reset form
         form.reset();
 
