@@ -1,73 +1,111 @@
-# React + TypeScript + Vite
+# Ligalytics - Team-Pairing-Verwaltung
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Kurze Erklärung der Lösung
 
-Currently, two official plugins are available:
+Diese Anwendung ermöglicht es Benutzern, Paarungswünsche zwischen Teams zu erfassen und zu verwalten. Die Lösung besteht aus drei Hauptkomponenten:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Kernfunktionalitäten:
 
-## React Compiler
+1. **Formular zum Erstellen von Pairings**: Modal-Dialog mit validierter Eingabe
+2. **Interaktive Tabelle zur Darstellung**: Sortierbare und gruppierbare Datenansicht
+3. **Lokale Datenpersistierung**: im Local Storage
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Technische Architektur:
 
-## Expanding the ESLint configuration
+- **Frontend**: React 19.1.1 mit TypeScript
+- **UI-Komponenten**: shadcn/ui Komponenten
+- **Styling**: TailwindCSS
+- **Datenvalidierung**: Zod Schema Validation mit react-hook-form
+- **Tabellenfunktionalität**: TanStack Table v8 für erweiterte Sortier- und Gruppierungsoptionen
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Datenmodell:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```typescript
+interface Pairing {
+    id: number;
+    teamA: string;
+    teamB: string;
+    startDate: Date;
+    endDate: Date;
+    rule:
+        | "am gleichen Tag zuhause"
+        | "am gleichen Wochenende zuhause"
+        | "nicht am gleichen Tag zuhause"
+        | "nicht am gleichen Wochenende zuhause";
+    commentary?: string;
+    createdAt: string;
+}
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Gewählte Visualisierungsmethode und Begründung
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Interaktive Daten-Tabelle mit erweiterten Funktionen
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+**Begründung für diese Lösung:**
+
+1. **Übersichtlichkeit**: Tabellenformat bietet die beste Lesbarkeit für strukturierte Daten mit mehreren Attributen
+2. **Skalierbarkeit**: Kann problemlos hunderte von Pairings darstellen ohne Performance-Einbußen
+3. **Interaktivität**:
+    - **Sortierung**: Spalten sind sortierbar (aufsteigend/absteigend)
+    - **Gruppierung**: Dynamisches Gruppieren nach Team A, Team B oder Regel
+
+### Spezifische UI/UX-Entscheidungen:
+
+1. **Modal-Dialog für Eingaben**:
+    - Vermeidet Seitenwechsel
+    - Fokussierte Eingabeerfahrung
+    - Automatisches Schließen nach erfolgreichem Speichern
+
+2. **Toast-Notifications**:
+    - Sofortiges Feedback für Benutzeraktionen
+    - Erfolgs- und Fehlermeldungen mit Details
+
+3. **Tooltips und Hover-States**:
+    - Kontextuelle Hilfe für Buttons
+    - Verbesserte Accessibility
+
+## Geschätzter Zeitaufwand
+
+### Gesamtaufwand: 1.5 Stunden
+
+## Was ich mit mehr Zeit noch ergänzt hätte
+
+**Konfliktlogik implementieren**
+
+**Erweiterte Datenvalidierung**:
+
+- Prüfung auf doppelte Pairings
+- Business-Rule Validierung
+- Warnung bei kritischen Überschneidungen
+
+**Performance-Optimierungen**:
+
+- Virtual Scrolling für große Datenmengen
+
+**Erweiterte Visualisierungen**:
+
+- Kalender-View für zeitbasierte Analyse
+- Gantt-Chart für Zeitraum-Übersicht
+- Dashboard mit Statistiken
+
+**Testing-Suite**:
+
+- Unit Tests (Jest + React Testing Library)
+- Integration Tests
+- E2E Tests (Playwright/Cypress)
+- Visual Regression Tests
+
+### Technische Verbesserungen:
+
+**Zugänglichkeit (a11y)**:
+
+- Screen Reader Support
+- Keyboard Navigation
+- ARIA Labels und Descriptions
+- High Contrast Mode
+
+**Internationalisierung**:
+
+- i18n Support (react-i18next)
+- Mehrsprachigkeit
+- Lokalisierte Datums-/Zeitformate
