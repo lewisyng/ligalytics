@@ -32,17 +32,19 @@ function App() {
                         <DialogTrigger asChild>
                             <Button className="ml-auto bg-blue-600 hover:bg-blue-700 text-white">
                                 <Plus className="w-4 h-4 mr-2" />
-                                Add New Pairing
+                                Neues Pairing hinzufügen
                             </Button>
                         </DialogTrigger>
 
                         <DialogContent className="sm:max-w-[600px]">
                             <DialogHeader>
-                                <DialogTitle>Create New Pairing</DialogTitle>
+                                <DialogTitle>
+                                    Neues Pairing erstellen
+                                </DialogTitle>
 
                                 <DialogDescription>
-                                    Set up a new team pairing rule with specific
-                                    dates and constraints.
+                                    Erstellen Sie eine neue Team-Pairing-Regel
+                                    mit spezifischen Daten und Einschränkungen.
                                 </DialogDescription>
                             </DialogHeader>
 

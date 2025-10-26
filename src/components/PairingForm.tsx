@@ -39,10 +39,10 @@ export const PairingForm = ({
         teamA: z.enum(allTeamNames as [string, ...string[]]),
         teamB: z.enum(allTeamNames as [string, ...string[]]),
         startDate: z.date({
-            message: "Start date is required",
+            message: "Startdatum ist erforderlich",
         }),
         endDate: z.date({
-            message: "End date is required",
+            message: "Enddatum ist erforderlich",
         }),
         rule: z.enum([
             "am gleichen Tag zuhause",
@@ -97,8 +97,8 @@ export const PairingForm = ({
         form.reset();
 
         // Show success toast
-        toast.success("Pairing saved successfully!", {
-            description: `${pairing.teamA} vs ${pairing.teamB} has been added to your pairings.`,
+        toast.success("Pairing erfolgreich gespeichert!", {
+            description: `${pairing.teamA} vs ${pairing.teamB} wurde zu Ihren Pairings hinzugefügt.`,
             duration: 4000,
         });
 
@@ -109,8 +109,8 @@ export const PairingForm = ({
     const onError = (errors: any) => {
         console.log("Form validation errors:", errors);
         const missingFields = Object.keys(errors).join(", ");
-        toast.error("Validation Error", {
-            description: `Please fill in all required fields: ${missingFields}`,
+        toast.error("Validierungsfehler", {
+            description: `Bitte füllen Sie alle erforderlichen Felder aus: ${missingFields}`,
             duration: 5000,
         });
     };
@@ -218,7 +218,7 @@ export const PairingForm = ({
                                                         )
                                                     ) : (
                                                         <span className="text-white">
-                                                            Start date
+                                                            Startdatum
                                                         </span>
                                                     )}
                                                     <CalendarIcon className="ml-auto h-4 w-4 text-white" />
@@ -269,7 +269,7 @@ export const PairingForm = ({
                                                         )
                                                     ) : (
                                                         <span className="text-white">
-                                                            End date
+                                                            Enddatum
                                                         </span>
                                                     )}
                                                     <CalendarIcon className="ml-auto h-4 w-4 text-white" />
@@ -310,7 +310,7 @@ export const PairingForm = ({
                                 >
                                     <FormControl>
                                         <SelectTrigger className="text-white">
-                                            <SelectValue placeholder="Rule" />
+                                            <SelectValue placeholder="Regel" />
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
@@ -340,7 +340,7 @@ export const PairingForm = ({
                             <FormItem>
                                 <FormControl>
                                     <Textarea
-                                        placeholder="Optional: Add any additional notes or comments about this pairing..."
+                                        placeholder="Optional: Fügen Sie zusätzliche Notizen oder Kommentare zu diesem Pairing hinzu..."
                                         className="text-white bg-transparent border-gray-300 placeholder:text-gray-400"
                                         rows={4}
                                         {...field}
@@ -354,7 +354,7 @@ export const PairingForm = ({
                         type="submit"
                         className="w-full bg-blue-600 hover:bg-blue-700 text-white"
                     >
-                        Save Pairing
+                        Pairing speichern
                     </Button>
                 </form>
             </Form>

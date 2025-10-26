@@ -98,7 +98,7 @@ export const PairingsTable: React.FC = () => {
                             }}
                             className="h-6 px-2 text-xs text-white hover:text-white"
                         >
-                            {grouping.includes("teamA") ? "Ungr." : "Gr."}
+                            {grouping.includes("teamA") ? "Aufh." : "Gr."}
                         </Button>
                     </div>
                 ),
@@ -132,7 +132,7 @@ export const PairingsTable: React.FC = () => {
                             }}
                             className="h-6 px-2 text-xs text-white hover:text-white"
                         >
-                            {grouping.includes("teamB") ? "Ungr." : "Gr."}
+                            {grouping.includes("teamB") ? "Aufh." : "Gr."}
                         </Button>
                     </div>
                 ),
@@ -143,7 +143,7 @@ export const PairingsTable: React.FC = () => {
                 id: "startDate",
                 header: ({ column }) => (
                     <div className="flex items-center gap-1">
-                        <span>Start Date</span>
+                        <span>Startdatum</span>
 
                         <PairingsTableSortButton column={column} />
                     </div>
@@ -155,7 +155,7 @@ export const PairingsTable: React.FC = () => {
                 id: "endDate",
                 header: ({ column }) => (
                     <div className="flex items-center gap-1">
-                        <span>End Date</span>
+                        <span>Enddatum</span>
 
                         <PairingsTableSortButton column={column} />
                     </div>
@@ -167,7 +167,7 @@ export const PairingsTable: React.FC = () => {
                 id: "rule",
                 header: ({ column }) => (
                     <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
-                        <span>Rule</span>
+                        <span>Regel</span>
 
                         <PairingsTableSortButton column={column} />
 
@@ -190,7 +190,7 @@ export const PairingsTable: React.FC = () => {
                             }}
                             className="h-6 px-2 text-xs text-white hover:text-white"
                         >
-                            {grouping.includes("rule") ? "Ungr." : "Gr."}
+                            {grouping.includes("rule") ? "Aufh." : "Gr."}
                         </Button>
                     </div>
                 ),
@@ -205,7 +205,7 @@ export const PairingsTable: React.FC = () => {
                 id: "commentary",
                 header: ({ column }) => (
                     <div className="flex items-center gap-1">
-                        <span>Commentary</span>
+                        <span>Kommentar</span>
 
                         <PairingsTableSortButton column={column} />
                     </div>
@@ -244,9 +244,10 @@ export const PairingsTable: React.FC = () => {
     if (pairings.length === 0) {
         return (
             <div className="w-full p-8">
-                <h2 className="text-2xl font-bold mb-4">Team Pairings</h2>
+                <h2 className="text-2xl font-bold mb-4">Team-Pairings</h2>
                 <div className="text-center py-8 text-gray-500">
-                    No pairings found. Add some pairings using the form above.
+                    Keine Pairings gefunden. Fügen Sie Pairings mit dem Formular
+                    oben hinzu.
                 </div>
             </div>
         );
@@ -256,13 +257,14 @@ export const PairingsTable: React.FC = () => {
         <div className="w-full max-w-[1000px] py-4 md:py-8">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
                 <h2 className="text-2xl font-bold text-gray-900">
-                    Team Pairings
+                    Team-Pairings
                 </h2>
 
                 {grouping.length > 0 && (
                     <div className="flex items-center gap-2 text-sm text-gray-600 bg-blue-50 px-3 py-1 rounded-lg">
                         <span>
-                            Grouped by: <strong>{grouping.join(", ")}</strong>
+                            Gruppiert nach:{" "}
+                            <strong>{grouping.join(", ")}</strong>
                         </span>
 
                         <Button
@@ -271,7 +273,7 @@ export const PairingsTable: React.FC = () => {
                             onClick={() => setGrouping([])}
                             className="h-6 px-2 text-xs"
                         >
-                            Clear Groups
+                            Gruppen löschen
                         </Button>
                     </div>
                 )}
