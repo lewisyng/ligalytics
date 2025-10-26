@@ -12,9 +12,15 @@ import {
     type ExpandedState,
 } from "@tanstack/react-table";
 import { Button } from "./ui/button";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronRight, Group, Ungroup } from "lucide-react";
 import { format } from "date-fns";
 import { PairingsTableSortButton } from "./PairingsTableSortButton";
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "./ui/tooltip";
 
 export interface Pairing {
     id: number;
@@ -29,13 +35,12 @@ export interface Pairing {
 
 const columnHelper = createColumnHelper<Pairing>();
 
-export const PairingsTable: React.FC = () => {
+export const PairingsTable = () => {
     const [pairings, setPairings] = useState<Pairing[]>([]);
     const [sorting, setSorting] = useState<SortingState>([]);
     const [grouping, setGrouping] = useState<GroupingState>([]);
     const [expanded, setExpanded] = useState<ExpandedState>({});
 
-    // Load pairings from localStorage
     useEffect(() => {
         const loadPairings = () => {
             const storedPairings = localStorage.getItem("pairings");
@@ -79,27 +84,45 @@ export const PairingsTable: React.FC = () => {
 
                         <PairingsTableSortButton column={column} />
 
-                        <Button
-                            variant={
-                                grouping.includes("teamA")
-                                    ? "default"
-                                    : "outline"
-                            }
-                            size="sm"
-                            onClick={() => {
-                                const isGrouped = grouping.includes("teamA");
-                                if (isGrouped) {
-                                    setGrouping(
-                                        grouping.filter((g) => g !== "teamA"),
-                                    );
-                                } else {
-                                    setGrouping([...grouping, "teamA"]);
-                                }
-                            }}
-                            className="h-6 px-2 text-xs text-white hover:text-white"
-                        >
-                            {grouping.includes("teamA") ? "Aufh." : "Gr."}
-                        </Button>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button
+                                    variant={
+                                        grouping.includes("teamA")
+                                            ? "default"
+                                            : "outline"
+                                    }
+                                    size="sm"
+                                    onClick={() => {
+                                        const isGrouped =
+                                            grouping.includes("teamA");
+                                        if (isGrouped) {
+                                            setGrouping(
+                                                grouping.filter(
+                                                    (g) => g !== "teamA",
+                                                ),
+                                            );
+                                        } else {
+                                            setGrouping([...grouping, "teamA"]);
+                                        }
+                                    }}
+                                    className="h-6 w-6 p-1 text-white hover:text-white"
+                                >
+                                    {grouping.includes("teamA") ? (
+                                        <Ungroup className="h-3 w-3" />
+                                    ) : (
+                                        <Group className="h-3 w-3" />
+                                    )}
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <p>
+                                    {grouping.includes("teamA")
+                                        ? "Gruppierung nach Team A aufheben"
+                                        : "Nach Team A gruppieren"}
+                                </p>
+                            </TooltipContent>
+                        </Tooltip>
                     </div>
                 ),
                 cell: (info) => info.getValue(),
@@ -113,27 +136,45 @@ export const PairingsTable: React.FC = () => {
 
                         <PairingsTableSortButton column={column} />
 
-                        <Button
-                            variant={
-                                grouping.includes("teamB")
-                                    ? "default"
-                                    : "outline"
-                            }
-                            size="sm"
-                            onClick={() => {
-                                const isGrouped = grouping.includes("teamB");
-                                if (isGrouped) {
-                                    setGrouping(
-                                        grouping.filter((g) => g !== "teamB"),
-                                    );
-                                } else {
-                                    setGrouping([...grouping, "teamB"]);
-                                }
-                            }}
-                            className="h-6 px-2 text-xs text-white hover:text-white"
-                        >
-                            {grouping.includes("teamB") ? "Aufh." : "Gr."}
-                        </Button>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button
+                                    variant={
+                                        grouping.includes("teamB")
+                                            ? "default"
+                                            : "outline"
+                                    }
+                                    size="sm"
+                                    onClick={() => {
+                                        const isGrouped =
+                                            grouping.includes("teamB");
+                                        if (isGrouped) {
+                                            setGrouping(
+                                                grouping.filter(
+                                                    (g) => g !== "teamB",
+                                                ),
+                                            );
+                                        } else {
+                                            setGrouping([...grouping, "teamB"]);
+                                        }
+                                    }}
+                                    className="h-6 w-6 p-1 text-white hover:text-white"
+                                >
+                                    {grouping.includes("teamB") ? (
+                                        <Ungroup className="h-3 w-3" />
+                                    ) : (
+                                        <Group className="h-3 w-3" />
+                                    )}
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <p>
+                                    {grouping.includes("teamB")
+                                        ? "Gruppierung nach Team B aufheben"
+                                        : "Nach Team B gruppieren"}
+                                </p>
+                            </TooltipContent>
+                        </Tooltip>
                     </div>
                 ),
                 cell: (info) => info.getValue(),
@@ -165,33 +206,49 @@ export const PairingsTable: React.FC = () => {
             }),
             columnHelper.accessor("rule", {
                 id: "rule",
-                header: ({ column }) => (
+                header: () => (
                     <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
                         <span>Regel</span>
 
-                        <PairingsTableSortButton column={column} />
-
-                        <Button
-                            variant={
-                                grouping.includes("rule")
-                                    ? "default"
-                                    : "outline"
-                            }
-                            size="sm"
-                            onClick={() => {
-                                const isGrouped = grouping.includes("rule");
-                                if (isGrouped) {
-                                    setGrouping(
-                                        grouping.filter((g) => g !== "rule"),
-                                    );
-                                } else {
-                                    setGrouping([...grouping, "rule"]);
-                                }
-                            }}
-                            className="h-6 px-2 text-xs text-white hover:text-white"
-                        >
-                            {grouping.includes("rule") ? "Aufh." : "Gr."}
-                        </Button>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button
+                                    variant={
+                                        grouping.includes("rule")
+                                            ? "default"
+                                            : "outline"
+                                    }
+                                    size="sm"
+                                    onClick={() => {
+                                        const isGrouped =
+                                            grouping.includes("rule");
+                                        if (isGrouped) {
+                                            setGrouping(
+                                                grouping.filter(
+                                                    (g) => g !== "rule",
+                                                ),
+                                            );
+                                        } else {
+                                            setGrouping([...grouping, "rule"]);
+                                        }
+                                    }}
+                                    className="h-6 w-6 p-1 text-white hover:text-white"
+                                >
+                                    {grouping.includes("rule") ? (
+                                        <Ungroup className="h-3 w-3" />
+                                    ) : (
+                                        <Group className="h-3 w-3" />
+                                    )}
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <p>
+                                    {grouping.includes("rule")
+                                        ? "Gruppierung nach Regel aufheben"
+                                        : "Nach Regel gruppieren"}
+                                </p>
+                            </TooltipContent>
+                        </Tooltip>
                     </div>
                 ),
                 cell: (info) => (
@@ -203,11 +260,9 @@ export const PairingsTable: React.FC = () => {
             }),
             columnHelper.accessor("commentary", {
                 id: "commentary",
-                header: ({ column }) => (
+                header: () => (
                     <div className="flex items-center gap-1">
                         <span>Kommentar</span>
-
-                        <PairingsTableSortButton column={column} />
                     </div>
                 ),
                 cell: (info) => (
@@ -243,127 +298,132 @@ export const PairingsTable: React.FC = () => {
 
     if (pairings.length === 0) {
         return (
-            <div className="w-full p-8">
-                <h2 className="text-2xl font-bold mb-4">Team-Pairings</h2>
-                <div className="text-center py-8 text-gray-500">
-                    Keine Pairings gefunden. Fügen Sie Pairings mit dem Formular
-                    oben hinzu.
+            <TooltipProvider>
+                <div className="w-full p-8">
+                    <h2 className="text-2xl font-bold mb-4">Team-Pairings</h2>
+                    <div className="text-center py-8 text-gray-500">
+                        Keine Pairings gefunden. Fügen Sie Pairings mit dem
+                        Formular oben hinzu.
+                    </div>
                 </div>
-            </div>
+            </TooltipProvider>
         );
     }
 
     return (
-        <div className="w-full max-w-[1000px] py-4 md:py-8">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
-                <h2 className="text-2xl font-bold text-gray-900">
-                    Team-Pairings
-                </h2>
+        <TooltipProvider>
+            <div className="w-full max-w-[1000px] py-4 md:py-8">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
+                    <h2 className="text-2xl font-bold text-gray-900">
+                        Team-Pairings
+                    </h2>
 
-                {grouping.length > 0 && (
-                    <div className="flex items-center gap-2 text-sm text-gray-600 bg-blue-50 px-3 py-1 rounded-lg">
-                        <span>
-                            Gruppiert nach:{" "}
-                            <strong>{grouping.join(", ")}</strong>
-                        </span>
+                    {grouping.length > 0 && (
+                        <div className="flex items-center gap-2 text-sm text-gray-600 bg-blue-50 px-3 py-1 rounded-lg">
+                            <span>
+                                Gruppiert nach:{" "}
+                                <strong>{grouping.join(", ")}</strong>
+                            </span>
 
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => setGrouping([])}
-                            className="h-6 px-2 text-xs"
-                        >
-                            Gruppen löschen
-                        </Button>
-                    </div>
-                )}
-            </div>
-
-            <div className="w-full overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
-                <table className="w-full table-auto min-w-max">
-                    <thead>
-                        {table.getHeaderGroups().map((headerGroup) => (
-                            <tr
-                                key={headerGroup.id}
-                                className="border-b bg-linear-to-r from-gray-50 to-gray-100"
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => setGrouping([])}
+                                className="h-6 px-2 text-xs"
                             >
-                                {headerGroup.headers.map((header) => (
-                                    <th
-                                        key={header.id}
-                                        className="text-left p-3 md:p-4 font-semibold text-gray-900 whitespace-nowrap min-w-fit"
-                                    >
-                                        {header.isPlaceholder
-                                            ? null
-                                            : flexRender(
-                                                  header.column.columnDef
-                                                      .header,
-                                                  header.getContext(),
-                                              )}
-                                    </th>
-                                ))}
-                            </tr>
-                        ))}
-                    </thead>
-                    <tbody className="divide-y divide-gray-200">
-                        {table.getRowModel().rows.map((row, index) => (
-                            <tr
-                                key={row.id}
-                                className={`
+                                Gruppen löschen
+                            </Button>
+                        </div>
+                    )}
+                </div>
+
+                <div className="w-full overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
+                    <table className="w-full table-auto min-w-max">
+                        <thead>
+                            {table.getHeaderGroups().map((headerGroup) => (
+                                <tr
+                                    key={headerGroup.id}
+                                    className="border-b bg-linear-to-r from-gray-50 to-gray-100"
+                                >
+                                    {headerGroup.headers.map((header) => (
+                                        <th
+                                            key={header.id}
+                                            className="text-left p-3 md:p-4 font-semibold text-gray-900 whitespace-nowrap min-w-fit"
+                                        >
+                                            {header.isPlaceholder
+                                                ? null
+                                                : flexRender(
+                                                      header.column.columnDef
+                                                          .header,
+                                                      header.getContext(),
+                                                  )}
+                                        </th>
+                                    ))}
+                                </tr>
+                            ))}
+                        </thead>
+                        <tbody className="divide-y divide-gray-200">
+                            {table.getRowModel().rows.map((row, index) => (
+                                <tr
+                                    key={row.id}
+                                    className={`
                   transition-colors hover:bg-gray-50
                   ${index % 2 === 0 ? "bg-white" : "bg-gray-50/50"}
                   ${row.getIsGrouped() ? "bg-blue-50/80 hover:bg-blue-100/80" : ""}
                 `}
-                            >
-                                {row.getVisibleCells().map((cell) => (
-                                    <td
-                                        key={cell.id}
-                                        className="p-3 md:p-4 text-sm text-gray-900 max-w-xs text-left"
-                                    >
-                                        {cell.getIsGrouped() ? (
-                                            <div className="flex items-center">
-                                                <Button
-                                                    variant="ghost"
-                                                    size="sm"
-                                                    onClick={row.getToggleExpandedHandler()}
-                                                    className="mr-2 h-8 w-8 p-0 hover:bg-blue-200"
-                                                >
-                                                    {row.getIsExpanded() ? (
-                                                        <ChevronDown className="h-4 w-4" />
-                                                    ) : (
-                                                        <ChevronRight className="h-4 w-4" />
-                                                    )}
-                                                </Button>
-                                                <div className="font-semibold text-blue-700">
-                                                    {flexRender(
+                                >
+                                    {row.getVisibleCells().map((cell) => (
+                                        <td
+                                            key={cell.id}
+                                            className="p-3 md:p-4 text-sm text-gray-900 max-w-xs text-left"
+                                        >
+                                            {cell.getIsGrouped() ? (
+                                                <div className="flex items-center">
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="sm"
+                                                        onClick={row.getToggleExpandedHandler()}
+                                                        className="mr-2 h-8 w-8 p-0 hover:bg-blue-200"
+                                                    >
+                                                        {row.getIsExpanded() ? (
+                                                            <ChevronDown className="h-4 w-4" />
+                                                        ) : (
+                                                            <ChevronRight className="h-4 w-4" />
+                                                        )}
+                                                    </Button>
+                                                    <div className="font-semibold text-blue-700">
+                                                        {flexRender(
+                                                            cell.column
+                                                                .columnDef.cell,
+                                                            cell.getContext(),
+                                                        )}
+                                                        <span className="ml-2 text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded-full">
+                                                            {row.subRows.length}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            ) : cell.getIsAggregated() ? (
+                                                flexRender(
+                                                    cell.column.columnDef
+                                                        .aggregatedCell ??
                                                         cell.column.columnDef
                                                             .cell,
-                                                        cell.getContext(),
-                                                    )}
-                                                    <span className="ml-2 text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded-full">
-                                                        {row.subRows.length}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        ) : cell.getIsAggregated() ? (
-                                            flexRender(
-                                                cell.column.columnDef
-                                                    .aggregatedCell ??
+                                                    cell.getContext(),
+                                                )
+                                            ) : cell.getIsPlaceholder() ? null : (
+                                                flexRender(
                                                     cell.column.columnDef.cell,
-                                                cell.getContext(),
-                                            )
-                                        ) : cell.getIsPlaceholder() ? null : (
-                                            flexRender(
-                                                cell.column.columnDef.cell,
-                                                cell.getContext(),
-                                            )
-                                        )}
-                                    </td>
-                                ))}
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                                                    cell.getContext(),
+                                                )
+                                            )}
+                                        </td>
+                                    ))}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
+        </TooltipProvider>
     );
 };

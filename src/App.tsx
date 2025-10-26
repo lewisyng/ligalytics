@@ -7,7 +7,6 @@ import { Toaster } from "sonner";
 import { Button } from "./components/ui/button";
 import {
     Dialog,
-    DialogClose,
     DialogContent,
     DialogDescription,
     DialogHeader,
@@ -25,7 +24,6 @@ function App() {
 
     return (
         <div className="min-h-screen w-full p-8">
-            {/* Header Section */}
             <header className="mb-8 border-b border-gray-200 pb-6">
                 <div className="flex justify-between items-center">
                     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>

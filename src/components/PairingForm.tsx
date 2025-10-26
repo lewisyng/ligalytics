@@ -1,12 +1,5 @@
 import { useForm } from "react-hook-form";
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "./ui/form";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form";
 import {
     Select,
     SelectContent,
@@ -341,7 +334,7 @@ export const PairingForm = ({
                                 <FormControl>
                                     <Textarea
                                         placeholder="Optional: Fügen Sie zusätzliche Notizen oder Kommentare zu diesem Pairing hinzu..."
-                                        className="text-white bg-transparent border-gray-300 placeholder:text-gray-400"
+                                        className="bg-transparent border-gray-300 placeholder:text-gray-400"
                                         rows={4}
                                         {...field}
                                     />
