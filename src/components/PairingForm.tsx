@@ -2,7 +2,6 @@ import { useForm } from "react-hook-form";
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -25,7 +24,13 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-export const PairingForm = ({ leagues }: { leagues: any }) => {
+export const PairingForm = ({
+    leagues,
+    onSuccess,
+}: {
+    leagues: any;
+    onSuccess?: () => void;
+}) => {
     const allTeamNames = leagues.leagues.flatMap((league: any) =>
         league.teams.map((team: any) => team.name),
     );
@@ -96,6 +101,9 @@ export const PairingForm = ({ leagues }: { leagues: any }) => {
             description: `${pairing.teamA} vs ${pairing.teamB} has been added to your pairings.`,
             duration: 4000,
         });
+
+        // Call onSuccess callback if provided (to close dialog)
+        onSuccess?.();
     };
 
     const onError = (errors: any) => {
@@ -125,7 +133,7 @@ export const PairingForm = ({ leagues }: { leagues: any }) => {
                                     >
                                         <FormControl>
                                             <SelectTrigger className="text-white">
-                                                <SelectValue placeholder="Select Team A" />
+                                                <SelectValue placeholder="Team A" />
                                             </SelectTrigger>
                                         </FormControl>
                                         <SelectContent>
@@ -161,7 +169,7 @@ export const PairingForm = ({ leagues }: { leagues: any }) => {
                                     >
                                         <FormControl>
                                             <SelectTrigger className="text-white">
-                                                <SelectValue placeholder="Select Team B" />
+                                                <SelectValue placeholder="Team B" />
                                             </SelectTrigger>
                                         </FormControl>
                                         <SelectContent>
@@ -193,9 +201,6 @@ export const PairingForm = ({ leagues }: { leagues: any }) => {
                             name="startDate"
                             render={({ field }) => (
                                 <FormItem className="flex flex-col">
-                                    <FormLabel className="text-white">
-                                        Start Date
-                                    </FormLabel>
                                     <Popover>
                                         <PopoverTrigger asChild>
                                             <FormControl>
@@ -212,11 +217,11 @@ export const PairingForm = ({ leagues }: { leagues: any }) => {
                                                             "PPP",
                                                         )
                                                     ) : (
-                                                        <span>
-                                                            Pick start date
+                                                        <span className="text-white">
+                                                            Start date
                                                         </span>
                                                     )}
-                                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                                    <CalendarIcon className="ml-auto h-4 w-4 text-white" />
                                                 </Button>
                                             </FormControl>
                                         </PopoverTrigger>
@@ -247,9 +252,6 @@ export const PairingForm = ({ leagues }: { leagues: any }) => {
                             name="endDate"
                             render={({ field }) => (
                                 <FormItem className="flex flex-col">
-                                    <FormLabel className="text-white">
-                                        End Date
-                                    </FormLabel>
                                     <Popover>
                                         <PopoverTrigger asChild>
                                             <FormControl>
@@ -266,11 +268,11 @@ export const PairingForm = ({ leagues }: { leagues: any }) => {
                                                             "PPP",
                                                         )
                                                     ) : (
-                                                        <span>
-                                                            Pick end date
+                                                        <span className="text-white">
+                                                            End date
                                                         </span>
                                                     )}
-                                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                                    <CalendarIcon className="ml-auto h-4 w-4 text-white" />
                                                 </Button>
                                             </FormControl>
                                         </PopoverTrigger>
@@ -308,32 +310,20 @@ export const PairingForm = ({ leagues }: { leagues: any }) => {
                                 >
                                     <FormControl>
                                         <SelectTrigger className="text-white">
-                                            <SelectValue placeholder="Select a rule" />
+                                            <SelectValue placeholder="Rule" />
                                         </SelectTrigger>
                                     </FormControl>
-                                    <SelectContent className="text-white">
-                                        <SelectItem
-                                            value="am gleichen Tag zuhause"
-                                            className="text-white"
-                                        >
+                                    <SelectContent>
+                                        <SelectItem value="am gleichen Tag zuhause">
                                             am gleichen Tag zuhause
                                         </SelectItem>
-                                        <SelectItem
-                                            value="am gleichen Wochenende zuhause"
-                                            className="text-white"
-                                        >
+                                        <SelectItem value="am gleichen Wochenende zuhause">
                                             am gleichen Wochenende zuhause
                                         </SelectItem>
-                                        <SelectItem
-                                            value="nicht am gleichen Tag zuhause"
-                                            className="text-white"
-                                        >
+                                        <SelectItem value="nicht am gleichen Tag zuhause">
                                             nicht am gleichen Tag zuhause
                                         </SelectItem>
-                                        <SelectItem
-                                            value="nicht am gleichen Wochenende zuhause"
-                                            className="text-white"
-                                        >
+                                        <SelectItem value="nicht am gleichen Wochenende zuhause">
                                             nicht am gleichen Wochenende zuhause
                                         </SelectItem>
                                     </SelectContent>
@@ -348,13 +338,9 @@ export const PairingForm = ({ leagues }: { leagues: any }) => {
                         name="commentary"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel className="text-white">
-                                    Commentary
-                                </FormLabel>
-
                                 <FormControl>
                                     <Textarea
-                                        placeholder="Add any additional notes or comments about this pairing..."
+                                        placeholder="Optional: Add any additional notes or comments about this pairing..."
                                         className="text-white bg-transparent border-gray-300 placeholder:text-gray-400"
                                         rows={4}
                                         {...field}
